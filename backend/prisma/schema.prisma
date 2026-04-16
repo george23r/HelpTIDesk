@@ -1,0 +1,58 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String // hashed
+  phone     String?  // for WhatsApp notifications
+  role      Role     @default(USER)
+  isSupport Boolean  @default(false) // true if user is support staff
+  tickets   Ticket[]
+  assignedTickets Ticket[] @relation("AssignedTickets")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Ticket {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  priority    Priority
+  status      Status   @default(OPEN)
+  userId      String
+  assignedToId String?
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  assignedTo  User?    @relation("AssignedTickets", fields: [assignedToId], references: [id])
+  history     Json? // [ {status, date, by} ]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum Status {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
