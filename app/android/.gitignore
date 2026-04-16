@@ -1,0 +1,21 @@
+# Gradle files
+.gradle/
+build/
+*.apk
+*.aar
+
+# Android Gradle wrapper
+gradle/wrapper/gradle-wrapper.jar
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Environment files
+local.properties
+
+# Build outputs
+*.dex
+*.class
