@@ -69,7 +69,7 @@ export class NotificationsService {
       await this.transporter.sendMail(mailOptions);
       this.logger.log(`✅ Email notification sent to ${supportEmail}`);
     } catch (error) {
-      this.logger.error(`❌ Failed to send email: ${error.message}`);
+      this.logger.error(`❌ Failed to send email: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
 
@@ -103,7 +103,7 @@ Por favor revisa el ticket en la plataforma.`;
 
       this.logger.log(`✅ WhatsApp notification sent to ${phoneNumber}`);
     } catch (error) {
-      this.logger.error(`❌ Failed to send WhatsApp: ${error.message}`);
+      this.logger.error(`❌ Failed to send WhatsApp: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
 
